@@ -1,0 +1,128 @@
+
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <link rel="stylesheet" href="assets/side.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+   
+  </head>
+  <body>
+
+    <input type="checkbox" id="check">
+    <!--header area start-->
+    <header>
+      
+      <div class="left_area">
+        <h3>Project Details &nbsp;
+          <label for="check">
+            <i class="fas fa-bars" id="sidebar_btn"></i>
+          </label>
+        </h3>
+       
+      </div>
+      <div class="right_area">
+        <a href="index.html" class="logout_btn">Logout</a>
+      </div>
+    </header>
+    <!--header area end-->
+    <!--mobile navigation bar start-->
+    <div class="mobile_nav">
+      <div class="nav_bar">
+       
+        <i class="fa fa-bars nav_btn"></i>
+      </div>
+      <div class="mobile_nav_items">
+        <a href="add.html"><i class="fas fa-plus"></i><span>Add Project Details</span></a>
+        <a href="retrieve.html"><i class="fas fa-search"></i><span>Retrieve Project Details</span></a>
+        <a href="delete.html"><i class="fas fa-trash"></i><span>Delete Project Details</span></a>
+      </div>
+    </div>
+    <!--mobile navigation bar end-->
+    <!--sidebar start-->
+    <div class="sidebar">
+      <div class="profile_info">
+        <h4>Menu</h4>
+       
+      </div>
+      <a href="add.html"><i class="fas fa-plus"></i><span>Add Project Details</span></a>
+      <a href="retrieve.html"><i class="fas fa-search"></i><span>Retrieve Project Details</span></a>
+      <a href="delete.html"><i class="fas fa-trash"></i><span>Delete Project Details</span></a>
+    </div> 
+<!-- <div class="content">
+
+
+  <form id="searchForm" >
+  <input type="text" id="searchTerm" placeholder="Search term">
+  <button type="submit">Search</button>
+  </form>
+  
+  <div id="searchResults"></div>
+  
+
+
+</div>
+     
+<script>
+const form = document.querySelector("#searchForm");
+const searchTermInput = document.querySelector("#searchTerm");
+const searchResults = document.querySelector("#searchResults");
+
+form.addEventListener("submit", async (e) => {
+e.preventDefault();
+
+const searchTerm = searchTermInput.value;
+if (!searchTerm) return;
+
+const response = await fetch(`http://localhost:3001/search/${searchTerm}`);
+const data = await response.text();
+
+searchResults.innerHTML = data;
+});
+</script> -->
+
+
+      
+   
+    
+    <!-- sidebar end -->
+    <div class="content">
+        
+    
+          <form id="searchForm" >
+            <input type="text" id="searchTerm" placeholder="Search term">
+            <button type="submit">Search</button>
+            </form>
+            <br>
+            <br>
+            <div id="searchResults"></div>       
+    </div>      
+
+    <script >
+
+const form = document.querySelector("#searchForm");
+const searchTermInput = document.querySelector("#searchTerm");
+const searchResults = document.querySelector("#searchResults");
+
+form.addEventListener("submit", async (e) => {
+e.preventDefault();
+
+const searchTerm = searchTermInput.value;
+if (!searchTerm) return;
+
+const response = await fetch(`http://localhost:3001/search?searchTerm=${searchTerm}`);
+const data = await response.text();
+
+searchResults.innerHTML = data;
+});
+
+
+</script>
+
+  </body>
+</html>

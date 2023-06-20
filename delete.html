@@ -1,0 +1,404 @@
+
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <link rel="stylesheet" href="assets/side.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+   
+  </head>
+  <body>
+
+    <input type="checkbox" id="check">
+    <!--header area start-->
+    <header>
+      
+      <div class="left_area">
+        <h3>Project Details &nbsp;
+          <label for="check">
+            <i class="fas fa-bars" id="sidebar_btn"></i>
+          </label>
+        </h3>
+       
+      </div>
+      <div class="right_area">
+        <a href="index.html" class="logout_btn">Logout</a>
+      </div>
+    </header>
+    <!--header area end-->
+    <!--mobile navigation bar start-->
+    <div class="mobile_nav">
+      <div class="nav_bar">
+       
+        <i class="fa fa-bars nav_btn"></i>
+      </div>
+      <div class="mobile_nav_items">
+        <a href="add.html"><i class="fas fa-plus"></i><span>Add Project Details</span></a>
+        <a href="retrieve.html"><i class="fas fa-search"></i><span>Retrieve Project Details</span></a>
+        <a href="delete.html"><i class="fas fa-trash"></i><span>Delete Project Details</span></a>
+      </div>
+    </div>
+    <!--mobile navigation bar end-->
+    <!--sidebar start-->
+    <div class="sidebar">
+      <div class="profile_info">
+        <h4>Menu</h4>
+       
+      </div>
+      <a href="add.html"><i class="fas fa-plus"></i><span>Add Project Details</span></a>
+      <a href="retrieve.html"><i class="fas fa-search"></i><span>Retrieve Project Details</span></a>
+      <a href="delete.html"><i class="fas fa-trash"></i><span>Delete Project Details</span></a>
+     
+    </div>
+    
+    <!--sidebar end-->
+
+    <!-- <div class="content">
+        
+      <form id="searchForm">
+        <input type="text" id="searchTerm" placeholder="Project name">
+        <button type="submit">Delete</button>
+        </form>
+        
+        <div id="searchResults"></div>
+    
+    </div> -->
+    <div class="content">
+ 
+      <div id="display-data"></div>
+ 
+      <div>
+ 
+       <input type="text" id="search-input" placeholder="Search">
+ 
+       <button onclick="searchData()">Search</button>
+       <br><br>
+ 
+     </div>
+ 
+  
+ 
+     <div id="data-container"></div>
+ 
+
+ 
+           </div>
+ 
+          
+ 
+           <br>
+ 
+           <br>
+ 
+           <br>
+
+          
+          
+    <script type="text/javascript">
+
+// Function to retrieve data from the API
+
+function getData() {
+
+fetch('http://localhost:3001/fetch1') // Replace with your API endpoint URL
+
+  .then(function(response) {
+
+    if (response.ok) {
+
+      return response.json();
+
+    } else {
+
+      throw new Error('Failed to retrieve data from the API.');
+
+    }
+
+  })
+
+  .then(function(data) {
+
+    // Store the data in a variable for searching
+
+    window.allData = data;
+
+
+
+
+    // Display all the data initially
+
+    displayData(data);
+
+  })
+
+  .catch(function(error) {
+
+    // Handle error case
+
+    alert(error.message);
+
+  });
+
+}
+
+
+
+
+// Function to display data
+
+function displayData(data) {
+
+  console.log(data);
+
+var dataContainer = document.getElementById('data-container');
+
+dataContainer.innerHTML = '';
+
+
+
+
+data.forEach(function(item) {
+
+  console.log(item)
+
+  var dataItem = document.createElement('div');
+
+
+
+
+  var itemName = document.createElement('p');
+
+  itemName.textContent = item.project_name; // Replace with the appropriate property from your API response
+
+  dataItem.appendChild(itemName);
+
+
+
+
+  var deleteButton = document.createElement('button');
+
+  deleteButton.textContent = 'Delete';
+
+  deleteButton.onclick = function() {
+
+    deleteItem(item.project_name); // Replace with the appropriate property from your API response that represents the item's ID
+
+  };
+
+  dataItem.appendChild(deleteButton);
+
+
+
+
+  dataContainer.appendChild(dataItem);
+
+});
+
+}
+
+
+
+
+// Function to search and filter data
+
+function searchData() {
+
+var searchInput = document.getElementById('search-input').value;
+
+console.log(searchInput)
+
+var searchTerm = searchInput.toLowerCase();
+
+
+
+
+var filteredData = window.allData.filter(function(item) {
+
+  return item.project_name.toLowerCase().includes(searchTerm); // Replace with the appropriate property from your API response
+
+});
+
+
+
+
+displayData(filteredData);
+
+}
+
+
+
+
+// Function to delete an item
+
+function deleteItem(itemId) {
+
+  console.log(itemId);
+
+fetch(`http://localhost:3001/delete1/${itemId}`, {
+
+  method: 'DELETE',
+
+})
+
+  .then(function(response) {
+    console.log(response)
+    if (response.ok) {
+
+      alert('Item deleted successfully.');
+
+      getData(); // Refresh the data after deleting an item
+
+    } else {
+
+      throw new Error('Failed to delete the item.');
+
+    }
+
+  })
+
+  .catch(function(error) {
+
+    // Handle error case
+
+    alert(error.message);
+
+  });
+
+}
+
+
+
+
+// Call the getData function when the page loads
+
+window.onload = getData;
+
+
+
+
+
+
+
+
+
+
+
+// const form = document.querySelector("#searchForm");
+// const searchTermInput = document.querySelector("#searchTerm");
+// const searchResults = document.querySelector("#searchResults");
+
+// form.addEventListener("submit", async (e) => {
+// e.preventDefault();
+
+// const searchTerm = searchTermInput.value;
+// if (!searchTerm) return;
+
+// const response = await fetch(`http://localhost:3001/delete/${searchTerm}`, { method: 'DELETE' });
+// const result = await response.json();
+// console.log(result);
+// console.log(response);
+// if (response.ok) {
+// alert(result.message);
+// // Reload or update the search results here
+// } else {
+// alert('Error deleting data');
+// }
+// });
+
+
+
+
+
+
+
+//     $(document).ready(function(){ 
+//         // toggle button 
+//       $('.nav_btn').click(function(){
+//         $('.mobile_nav_items').toggleClass('active');
+//       });
+//     });  
+//     const apiEndpoint = "http://localhost:3001/fetch1";
+//     const display = document.querySelector("#display-data");
+//     const input = document.querySelector("#input");
+
+//     const getData = async () => {
+//       const res = await fetch(apiEndpoint);
+//       const data = await res.json();
+//       return data
+//     }
+
+//     const displayUsers = async () =>
+//     {
+//       let query = input.value;
+//       console.log("Query::", query);
+    
+//     const payload = await getData();
+  
+//   let dataDisplay = payload.filter((eventData) => {
+//     if (query === ""){return eventData}
+//     else if (eventData.project_name.toLowerCase().includes(query.toLowerCase()))
+//     {
+//       return eventData
+//     }
+//   }).map((object) => {
+//     const {project_name, project_id, total_team_members, start_date, end_date } = object;
+//     return `
+//     <div class="container">
+//       <p>Project Name: ${project_name}</p> 
+//       <p>Project ID: ${project_id}</p>
+//       <p>Total Team Members: ${total_team_members}</p>
+//       <p>Start Date: ${start_date}</p>
+//       <p>End Date: ${end_date}</p>
+//       <br>
+//       <br>
+//     <button onclick="deleted()" type = "button"> Delete </button>
+
+//       </div>
+//       <hr>
+//       `
+
+//   }).join("");
+//   display.innerHTML = dataDisplay;
+//   }
+//   displayUsers();
+
+//   input.addEventListener("input", () =>{
+//     displayUsers();
+//   });
+// function deleted()
+// {
+//   alert("Are you sure?");
+//   const project_name= input.value;
+
+//   fetch(`http://localhost:3001/delete1/${project_name}`, {
+//      method: 'DELETE'
+//   })
+//     .then(response => {
+//       // Check the response status code
+//       if (response.status === 200) {
+//         // The data was deleted successfully
+//         console.log('Data deleted successfully');
+//         document.getElementById("deletesuccess").innerHTML="Data deleted successfully";
+//       } else {
+//         // An error occurred
+//         document.getElementById("deletesuccess").innerHTML="Project doesn't exist";
+//         console.log('Error deleting data');
+//       }
+//     })
+//     .catch(error => {
+//       // An error occurred
+//       console.log(error);
+//     });
+
+// }
+     
+
+</script>
+
+  </body>
+</html>
